@@ -6,7 +6,7 @@
 /*   By: slepetit <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/29 00:20:54 by slepetit          #+#    #+#             */
-/*   Updated: 2022/05/02 11:18:36 by slepetit         ###   ########.fr       */
+/*   Updated: 2022/05/04 02:59:55 by slepetit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,7 @@ char	*ft_strchr(const char *s, int c)
 	}
 	return (NULL);
 }
-/*
+
 char	*ft_substr(const char *s, unsigned int start, size_t len)
 {
 	size_t	i;
@@ -51,14 +51,14 @@ char	*ft_substr(const char *s, unsigned int start, size_t len)
 	str = (char *)s;
 	if (start > ft_strlen(s))
 	{
-		str = ft_calloc(1, sizeof(char));
+		str = malloc(sizeof(char) * 1);
 		if (str == NULL)
 			return (NULL);
 		return (str);
 	}
 	if (len >= ft_strlen(s))
 		len = ft_strlen(s) - start;
-	str = ft_calloc(len + 1, sizeof(char));
+	str = malloc(sizeof(char) * len + 1);
 	if (str == NULL)
 		return (NULL);
 	while (s[start] && len--)
@@ -105,7 +105,6 @@ char	*ft_strdup(const char *s)
 	dest = malloc(sizeof(char) * (ft_strlen(s) + 1));
 	if (dest == NULL)
 		return (NULL);
-	//ft_strcpy(dest, cpy);
 	while (cpy[i])
 	{
 		dest[i] = cpy[i];
@@ -114,4 +113,3 @@ char	*ft_strdup(const char *s)
 	dest[i] = 0;
 	return (dest);
 }
-*/
