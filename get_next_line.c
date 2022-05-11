@@ -6,16 +6,35 @@
 /*   By: slepetit <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/04/29 00:17:32 by slepetit          #+#    #+#             */
-/*   Updated: 2022/05/04 02:59:58 by slepetit         ###   ########.fr       */
+/*   Updated: 2022/05/11 19:16:16 by slepetit         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "get_next_line.h"
-#include <stdio.h>
 
-// ?? char	*ft_read(buff, fd, BUFFER_SIZE, line) return line
+size_t	ft_bslash(const char *line)
+{
+	size_t	i;
 
-// ?? ft_check(line, ...)
+	i = 0;
+	while (line[i])
+	{
+		if (line[i] == '\n')
+			return (i);
+		i++;
+	}
+	return (i);
+}
+
+char	*ft_check_line(char **line, char *save)
+{
+	if (save)
+		*line = ft_strjoin(save, *line);
+	if (ft_strchr(*line, '\n'))
+		save = ft_substr(*line, ft_bslash(*line) + 1, ft_strlen(*line));
+	*line = ft_substr(*line, 0, ft_bslash(*line) + 1);
+	return (save);
+}
 
 char	*get_next_line(int fd)
 {
@@ -24,34 +43,41 @@ char	*get_next_line(int fd)
 	char	buff[BUFFER_SIZE + 1];
 	int	size;
 
+	buff[BUFFER_SIZE] = 0;
+	size = 1;
 	line = malloc(sizeof(char) * 1);
 	if (line == NULL || fd < 0)
 		return (NULL);
-	size = read(fd, buff, BUFFER_SIZE);
-	buff[BUFFER_SIZE] = 0;
-	line = 0;
-	// line = ft_read(...)
-	// if line nana, substr, if line nana
 	while (size)
 	{
-		// fill line with conditions strjoin
-		if (ft_strchr(buff, '\n'))
+		if (save && ft_strchr(save, '\n'))
 			break ;
 		size = read(fd, buff, BUFFER_SIZE);
+		buff[size] = 0;
+		line = ft_strjoin(line, buff);
+		if (ft_strchr(line, '\n'))
+			break ;
 	}
-	// check for save, substr &co
+	if (!save && size == 0)
+	{
+		return (NULL);
+	}
+	save = ft_check_line(&line, save);
 	return (line);
 }
 
-int	main()
+/*int	main()
 {
 	int	fd;
+	char	*str;
 
 	fd = open("./fd.txt", O_RDONLY);
-	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));
-	printf("%s", get_next_line(fd));
+	str = get_next_line(fd);
+	printf("%s", str);
+	free(str);
+	str = get_next_line(fd);
+	printf("%s", str);
+	free(str);
 	close(fd);
 	return 0;
-}
+}*/
